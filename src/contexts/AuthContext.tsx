@@ -1,18 +1,22 @@
-import React ,{useContext, useEffect, useState } from 'react';
+import React ,{ReactNode, useContext, useEffect, useState } from 'react';
 import {auth, googleProvider} from '../config/firebase'
-import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup,User } from 'firebase/auth';
 
 // @ts-ignore
-const AuthContext=React.createContext()
+const AuthContext=React.createContext({currentUser: {} as User | null
+                                      ,signup:(e:string,p:string)=>{}
+                                      ,signupWithGoogle:()=>{}})
 
+interface Props {
+  children?: ReactNode
+}
 
 export function useAuth(){
-  // @ts-ignore
   return useContext(AuthContext)
 }
 
-export function AuthProvider({children}) {
-    const [currentUser, setCurrentUser] = useState()
+export function AuthProvider({children}:Props) {
+    const [currentUser, setCurrentUser] = useState<User | null>(null)
     const [loading,setLoading]=useState(true)
   
     function signupWithGoogle(){
@@ -20,14 +24,12 @@ export function AuthProvider({children}) {
     }
     
     
-    function signup(email,password){
-      //@ts-ignore
+    function signup(email:string,password:string){
       return createUserWithEmailAndPassword(auth,email,password)
     }
 
     useEffect(()=>{
       const unsubscribe= auth.onAuthStateChanged(user=>{
-        //@ts-ignore
         setCurrentUser(user)
         setLoading(false)
       })

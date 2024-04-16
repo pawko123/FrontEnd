@@ -1,7 +1,7 @@
 
 import { IonButton, IonInput} from '@ionic/react'
 import "./Login.css"
-import {useRef, useState} from 'react'
+import {EventHandler, useRef, useState} from 'react'
 import { useAuth } from '../contexts/AuthContext'
 //import { useHistory } from 'react-router'
 
@@ -10,33 +10,35 @@ import { useAuth } from '../contexts/AuthContext'
 export default function Login() {
   const [error,setError]=useState("")
   const [loading,setLoading]=useState(false)
-  const email=useRef()
-  const password=useRef()
-  const passwordconfirm=useRef()
-  //const history=useHistory()
-  //@ts-ignore
+  const email=useRef<HTMLIonInputElement>(null)
+  const password=useRef<HTMLIonInputElement>(null)
+  const passwordconfirm=useRef<HTMLIonInputElement>(null)
   const {currentUser,signup,signupWithGoogle}=useAuth()
 
-  async function handlesubmitnormal(e){
+  async function handlesubmitnormal(e:any){
     e.preventDefault()
-    //@ts-ignore
-    if (password.current.value !== passwordconfirm.current.value) {
+    if (password?.current?.value !== passwordconfirm?.current?.value) {
       return setError("Passwords do not match")
     }
-    try{
-      setError("")
-      setLoading(true)
-    //@ts-ignore
-      await signup(email.current.value,password.current.value)
-     // history.push("/")
-    }catch{
-      setError("Failed to Sign in")
+    const emailValue = email.current?.value;
+    const passwordValue = password.current?.value;
+    if(typeof emailValue === 'string' && typeof passwordValue === 'string') {
+      try{
+        setError("")
+        setLoading(true)
+        await signup(emailValue,passwordValue)
+      }catch{
+        setError("Failed to Sign in")
+      }
+      setLoading(false)
     }
-    setLoading(false)
+    else {
+      return setError("Email and password must be provided.");
+    }
   }
   
   
-  async function handlesubmitgoogle(e){
+  async function handlesubmitgoogle(e:any){
     e.preventDefault()
     try{
       setError("")
