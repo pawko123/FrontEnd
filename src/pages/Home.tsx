@@ -1,8 +1,7 @@
 import { IonButton,  IonPage } from '@ionic/react';
 import './Home.css';
-import { useHistory } from 'react-router-dom';
 
-const Home: React.FC = () => {
+export default function Home() {
   
   return (
     <IonPage>
@@ -10,5 +9,3 @@ const Home: React.FC = () => {
     </IonPage>
   );
 };
-
-export default Home;
