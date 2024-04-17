@@ -1,11 +1,14 @@
-import { IonButton,  IonPage } from '@ionic/react';
+import { IonPage} from '@ionic/react';
 import './Home.css';
+import NavBar from '../components/NavBar';
+
 
 export default function Home() {
-  
   return (
+    <>
     <IonPage>
-        <IonButton href='/Login' style={{maxWidth: '400px' }}>Halo</IonButton>
+      <NavBar/>
     </IonPage>
+    </>
   );
 };

@@ -1,19 +1,24 @@
 
 import { IonButton, IonInput} from '@ionic/react'
-import "./Login.css"
-import {EventHandler, useRef, useState} from 'react'
-import { useAuth } from '../contexts/AuthContext'
-//import { useHistory } from 'react-router'
+import { useEffect, useRef, useState} from 'react'
+import { useAuth } from '../../contexts/AuthContext'
+import { useHistory } from 'react-router'
+import googleicon from '../../images/googleicon.svg' 
 
-
-
-export default function Login() {
+export default function Signup() {
   const [error,setError]=useState("")
   const [loading,setLoading]=useState(false)
   const email=useRef<HTMLIonInputElement>(null)
   const password=useRef<HTMLIonInputElement>(null)
   const passwordconfirm=useRef<HTMLIonInputElement>(null)
-  const {currentUser,signup,signupWithGoogle}=useAuth()
+  const {currentUser,signup,signupWithGoogle,logout}=useAuth()
+  const history = useHistory()
+
+  useEffect(() => {
+    if (currentUser) {
+      history.push('/Home');
+    }
+  }, [currentUser, history]);
 
   async function handlesubmitnormal(e:any){
     e.preventDefault()
@@ -27,6 +32,8 @@ export default function Login() {
         setError("")
         setLoading(true)
         await signup(emailValue,passwordValue)
+        await logout()
+        history.push("/Login")
       }catch{
         setError("Failed to Sign in")
       }
@@ -44,7 +51,8 @@ export default function Login() {
       setError("")
       setLoading(true)
       await signupWithGoogle()
-     // history.push("/")
+      await logout()
+      history.push("/Login")
     }catch{
         setError("Failed to Sign in")
       }
@@ -54,7 +62,8 @@ export default function Login() {
   return (
     <>
     <div style={{maxWidth:"600 px"}}>
-        <p className='ion-text-center'>Login Page</p>
+        {error && <span>{error}</span>}
+        <p className='ion-text-center'>Sign in Page</p>
         <IonInput label="Email" type="email" labelPlacement="floating" fill="outline" placeholder="example@gmail.com" ref={email} required></IonInput>
           <br />
         <IonInput label="Password" type="password" labelPlacement="floating" fill="outline" placeholder="Password" ref={password} required></IonInput>
@@ -63,8 +72,7 @@ export default function Login() {
         <div className='przyciski'>
           <IonButton disabled={loading} onClick={handlesubmitnormal} style={{maxWidth: '400px'}}>Sign up</IonButton>
           <IonButton disabled={loading} onClick={handlesubmitgoogle} style={{maxWidth: '400px'}}>Sign up with Google</IonButton>
-          <span style={{color:"red"}}>{error}</span>
-          <span style={{color:"red"}}>{JSON.stringify(currentUser)}</span>
+        <p className='ion-text-center'>Already have an account?<a href='/Login'>Login</a></p>
         </div>
     </div>
     </>
