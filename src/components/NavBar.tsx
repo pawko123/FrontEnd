@@ -31,7 +31,7 @@ async function handlelogout(){
                 <a href='/Events' style={{fontSize:"40px",textDecoration:"none",color:"white"}}>Events</a>
               </IonCol>
               <IonCol size='2' className='ion-text-center'>
-                <a href='/ServicesMap' style={{fontSize:"40px",textDecoration:"none",color:"white"}}>Service Shops</a>
+                <a href='/Services' style={{fontSize:"40px",textDecoration:"none",color:"white"}}>Service Shops</a>
               </IonCol>
               <IonCol className='ion-text-center'>
                 {currentUser ? 

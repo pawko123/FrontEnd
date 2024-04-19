@@ -24,6 +24,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import Services from './pages/Services';
 
 setupIonicReact();
 
@@ -34,6 +35,9 @@ const App: React.FC = () => (
         <IonRouterOutlet>
           <Route exact path="/home">
             <Home />
+          </Route>
+          <Route exact path="/Services">
+            <Services />
           </Route>
           <Route exact path="/Login">
             <Login />
