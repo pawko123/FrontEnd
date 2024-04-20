@@ -1,18 +1,26 @@
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet"
+import { MapContainer, TileLayer } from "react-leaflet"
 import 'leaflet/dist/leaflet.css';
 import { LatLng, latLng } from "leaflet";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ShopMarker from "./ShopMarker";
 import {Service} from "../types/Service.types"
+import { AutoRepair } from "../types/AutoRepair.types";
+import AutoRepairMarker from "./AutoRepairMarker";
 
 export default function ServicesMap() {
 
-    const [data,setData]=useState<Service[]>([])
+    const [Servicedata,setServiceData]=useState<Service[]>([])
+    const [AutoRepairdata,setAutoRepairData]=useState<AutoRepair[]>([])
 
     useEffect(()=>{
         axios.get("http://localhost:5000/services")
-        .then(res => setData(res.data)).
+        .then(res => setServiceData(res.data)).
+        catch(err => console.log(err))
+    },[])
+    useEffect(()=>{
+        axios.get("http://localhost:5000/autorepair")
+        .then(res => setAutoRepairData(res.data)).
         catch(err => console.log(err))
     },[])
 
@@ -25,7 +33,10 @@ export default function ServicesMap() {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {
-                data.length>0 && data.map((service:Service,index)=><ShopMarker service={service} key={index}/>)
+                Servicedata.length>0 && Servicedata.map((service:Service,index)=><ShopMarker service={service} key={index}/>)
+            }
+            {
+                AutoRepairdata.length>0 && AutoRepairdata.map((autorepair:AutoRepair,index)=><AutoRepairMarker autorepair={autorepair} key={index}/>)
             }
         </MapContainer>
     )

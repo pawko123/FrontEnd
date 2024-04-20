@@ -23,6 +23,7 @@
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.6.8",
     "firebase": "^10.11.0",
+    "gpxparser": "^3.0.8",
     "ionicons": "^7.0.0",
     "leaflet": "^1.9.4",
     "react": "^18.2.0",

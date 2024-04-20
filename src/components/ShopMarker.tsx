@@ -7,8 +7,9 @@ interface Props{
     service:Service
     key:number
 }
-
-const ShopMarker:React.FC<Props>=({service,key})=> {
+//inny sposob const ShopMarker:React.FC<Props>=({service,key})=> a potem export default na koncu pliku
+export default function ShopMarker(Props:Props) {
+    const {service,key}=Props
     const bicycle_icon=new Icon({
         iconUrl:bicycle,
         iconSize:[40,40]
@@ -28,4 +29,3 @@ const ShopMarker:React.FC<Props>=({service,key})=> {
   )
 }
 
-export default ShopMarker
