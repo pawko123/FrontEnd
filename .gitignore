@@ -28,4 +28,4 @@ yarn-error.log*
 # Optional eslint cache
 .eslintcache
 #config firbase
-./src/config/firebase.ts
+/src/config/firebase.ts
