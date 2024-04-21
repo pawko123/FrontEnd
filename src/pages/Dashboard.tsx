@@ -16,6 +16,8 @@ export default function Dashboard() {
     const gpxfileref=useRef<HTMLInputElement>(null)
     const nazwaref=useRef<HTMLInputElement>(null)
     const [UserMapsData,setUserMapsData]=useState<Map[]>([])
+    
+    
     useEffect(()=>{
         axios.get(`http://localhost:5000/maps/${currentUser?.email}`)
         .then(res => {setUserMapsData(res.data)
@@ -52,6 +54,23 @@ export default function Dashboard() {
                 setLoading(false)
                 return;
             }
+            const allowedTypes=["image/jpeg","image/png"]
+            var arefilesvalid:boolean=true
+            Array.from(zdjecia).forEach((zdjecie) => {
+                if(!allowedTypes.includes(zdjecie.type)){
+                    arefilesvalid=false
+                }
+            })
+            if(!arefilesvalid){
+                setError("Niepoprawny format plikow zdjeciowych")
+                setLoading(false)
+                return
+            }
+        }
+        if(!plikGPX.name.endsWith(".gpx")){
+            setError("Niepoprawny format pliku trasy")
+            setLoading(false)
+            return
         }
         const formData = new FormData();
         formData.append('TrackName', nazwaTrasy);
@@ -63,14 +82,17 @@ export default function Dashboard() {
             });
         }
         formData.append('plikGPX', plikGPX);
-        console.log(formData)
+        //console.log(formData)
         try {
               const response = await axios.post('http://localhost:5000/maps', formData, {
                  headers: {
                   'Content-Type': 'multipart/form-data',
                  },
                });
-               console.log('Odpowiedź serwera:', response.data);
+               //console.log('Odpowiedź serwera:', response.data);
+               {response.data.massage ? setError(response.data.message) : 
+                setError("Trasa przeslana pomyslnie") 
+               }
          } catch (error) {
                console.error('Błąd podczas wysyłania żądania:', error);
            }
@@ -90,7 +112,7 @@ export default function Dashboard() {
             }
             <p>Tworzenie mapy</p>
             <p>Nazwa trasy:<input type="text" ref={nazwaref}/>-wymagane</p>
-            <p>Zdjecia tu:<input type="file" ref={zdjeciaref} multiple/></p>
+            <p>Zdjecia tu:<input type="file" ref={zdjeciaref} multiple/> (tylko pliki png i jpg)</p>
             <p>Plik gpx tu:<input type="file" ref={gpxfileref}/>-wymagane<br/>
             Utworz swoj plik tutaj: <a href="https://gpx.studio/l/pl/" target="_blank">https://gpx.studio/l/pl/</a></p>
                 <br />
