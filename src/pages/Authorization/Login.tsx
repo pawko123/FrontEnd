@@ -64,6 +64,7 @@ export default function Login() {
           <IonButton disabled={loading} onClick={handlesubmitnormal} style={{maxWidth: '400px'}}>Log in</IonButton>
           <IonButton disabled={loading} onClick={handlesubmitgoogle} style={{maxWidth: '400px'}}>Log in with Google</IonButton>
         <p className='ion-text-center'>Don't have an account?<a href='/Signup'>Sign up</a></p>
+        <p className='ion-text-center'>Return to HomePage <a href='/Home'>Home</a></p>
         </div>
     </div>
     </>

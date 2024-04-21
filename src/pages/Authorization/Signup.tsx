@@ -73,6 +73,7 @@ export default function Signup() {
           <IonButton disabled={loading} onClick={handlesubmitnormal} style={{maxWidth: '400px'}}>Sign up</IonButton>
           <IonButton disabled={loading} onClick={handlesubmitgoogle} style={{maxWidth: '400px'}}>Sign up with Google</IonButton>
         <p className='ion-text-center'>Already have an account?<a href='/Login'>Login</a></p>
+        <p className='ion-text-center'>Return to HomePage <a href='/Home'>Home</a></p>
         </div>
     </div>
     </>

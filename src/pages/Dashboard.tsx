@@ -1,24 +1,33 @@
 import { IonButton, IonContent, IonPage } from "@ionic/react";
 import NavBar from "../components/NavBar";
 import { useAuth } from "../contexts/AuthContext";
-import { useHistory } from "react-router";
+import { Redirect } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { Map } from "../types/Map.types";
+import MapListing from "../components/MapListing";
+import GpxParser from "gpxparser";
 
 export default function Dashboard() {
     const {currentUser}=useAuth()
-    const history = useHistory()
     const zdjeciaref=useRef<HTMLInputElement>(null)
     const [error,setError]=useState<string>('')
     const [loading,setLoading]=useState<boolean>(false)
     const gpxfileref=useRef<HTMLInputElement>(null)
     const nazwaref=useRef<HTMLInputElement>(null)
+    const [UserMapsData,setUserMapsData]=useState<Map[]>([])
+    useEffect(()=>{
+        axios.get(`http://localhost:5000/maps/${currentUser?.email}`)
+        .then(res => {setUserMapsData(res.data)
+        console.log(res.data)}).
+        catch(err => console.log(err))
+    },[])
 
-    useEffect(() => {
-      if (!currentUser) {
-        history.push('/Login');
-      }
-    }, [currentUser, history]);
+
+
+    if (!currentUser) {
+      return <Redirect to="/Login" />;
+    }
 
     async function handleSend(e:any) {
         e.preventDefault();
@@ -29,6 +38,11 @@ export default function Dashboard() {
         const useremail = currentUser?.email
         if(!nazwaTrasy || !plikGPX) {
             setError('Proszę wypełnić nazwę trasy i wybrać plik GPX.');
+            setLoading(false);
+            return;
+        }
+        if(!useremail) {
+            setError('Proszę sie zalogowac');
             setLoading(false);
             return;
         }
@@ -44,23 +58,24 @@ export default function Dashboard() {
         if(useremail){
         formData.append('Creator', currentUser?.email);
         if(zdjecia){
-            Array.from(zdjecia).forEach((zdjecie, index) => {
+            Array.from(zdjecia).forEach((zdjecie) => {
                 formData.append(`pictures`, zdjecie);
             });
         }
         formData.append('plikGPX', plikGPX);
-        setLoading(false);
+        console.log(formData)
         try {
-             const response = await axios.post('http://localhost:5000/maps', formData, {
-               headers: {
-                 'Content-Type': 'multipart/form-data',
-               },
-             });
-             console.log('Odpowiedź serwera:', response.data);
-           } catch (error) {
-             console.error('Błąd podczas wysyłania żądania:', error);
+              const response = await axios.post('http://localhost:5000/maps', formData, {
+                 headers: {
+                  'Content-Type': 'multipart/form-data',
+                 },
+               });
+               console.log('Odpowiedź serwera:', response.data);
+         } catch (error) {
+               console.error('Błąd podczas wysyłania żądania:', error);
            }
-    }
+          setLoading(false);
+     }
 }
 
   return (
@@ -70,6 +85,9 @@ export default function Dashboard() {
         <IonContent fullscreen>
             <p>{currentUser?.displayName} {currentUser?.email} Dashboard Page</p>
             <p>Posiadane mapy</p>
+            {
+                UserMapsData.length>0 && UserMapsData.map((map:Map,index)=><MapListing map={map} key={index}/>)
+            }
             <p>Tworzenie mapy</p>
             <p>Nazwa trasy:<input type="text" ref={nazwaref}/>-wymagane</p>
             <p>Zdjecia tu:<input type="file" ref={zdjeciaref} multiple/></p>
