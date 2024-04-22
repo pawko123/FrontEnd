@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Map } from "../types/Map.types";
 import MapListing from "../components/MapListing";
-import GpxParser from "gpxparser";
 
 export default function Dashboard() {
     const {currentUser}=useAuth()

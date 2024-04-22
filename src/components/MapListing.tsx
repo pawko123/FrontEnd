@@ -22,8 +22,8 @@ export default function MapListing(Props:Props) {
             />
             <Polyline pathOptions={{color:"blue"}} positions={coordinates} />
             </MapContainer>
-            <p><span>{map.TrackName.charAt(0).toUpperCase() + map.TrackName.slice(1)}  Length: {(distanceInKm)}km Elevation up: 
-            {map.posElevation.valueOf()} Elevation down: {map.negElevation.valueOf()}</span></p>
+            <p><span>{map.TrackName}  Length: {(distanceInKm)}km Elevation up: 
+            {map.posElevation.valueOf().toFixed(2)}m Elevation down: {map.negElevation.valueOf().toFixed(2)}m</span></p>
         </div>
   )
 }
