@@ -5,5 +5,7 @@ export type Map={
     RoutePoints:[number[]]
     Distance:number,
     negElevation:number,
+    verified:boolean,
+    instresting:boolean,
     posElevation:number
 }

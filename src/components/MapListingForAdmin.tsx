@@ -9,7 +9,7 @@ interface Props{
     key:number
 }
 //inny sposob const ShopMarker:React.FC<Props>=({service,key})=> a potem export default na koncu pliku
-export default function MapListing(Props:Props) {
+export default function MapListingForAdmin(Props:Props) {
     const {isadmin}=useAuth()
     const {map}=Props
     const distanceInKm = (map.Distance.valueOf() / 1000).toFixed(2);
@@ -27,6 +27,10 @@ export default function MapListing(Props:Props) {
             </MapContainer>
             <p><span>{map.TrackName}  Length: {(distanceInKm)}km Elevation up: 
             {map.posElevation.valueOf().toFixed(2)}m Elevation down: {map.negElevation.valueOf().toFixed(2)}m Verified: {map.verified ? <>prawda</> : <>falsz</>}</span></p>
+            {isadmin && !map.verified && <>
+            <IonButton>Verify</IonButton>
+            <IonButton>Deny</IonButton>
+            </>}
         </div>
   )
 }

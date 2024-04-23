@@ -26,6 +26,8 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import Services from './pages/Services';
 import Dashboard from './pages/Dashboard';
+import NewMapForm from './pages/NewMapForm';
+import MapsVerification from './pages/MapsVerification';
 
 setupIonicReact();
 
@@ -48,6 +50,12 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/Dashboard">
             <Dashboard />
+          </Route>
+          <Route exact path="/NewMapForm">
+            <NewMapForm />
+          </Route>
+          <Route exact path="/MapsVerification">
+            <MapsVerification />
           </Route>
           <Route exact path="/">
             <Redirect to="/home" />
