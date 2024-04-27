@@ -12,19 +12,11 @@ export default function MapsVerification() {
     const [unverifiedMaps,setunverifiedMaps]=useState<Map[]>([])
     
     useEffect(()=>{
-        axios.get(`http://localhost:5000/maps/${currentUser?.email}`)
+        axios.get('http://localhost:5000/maps/unverifiedmaps')
         .then(res => {setunverifiedMaps(res.data)
         console.log(res.data)}).
         catch(err => console.log(err))
     },[])
-
-    useEffect(()=>{
-        axios.get(`http://localhost:5000/maps`)
-        .then(res => {console.log(res.data)}).
-        catch(err => console.log(err))
-    },[])
-    
-
 
     if (!currentUser) {
       return <Redirect to="/Login" />;
@@ -39,11 +31,12 @@ export default function MapsVerification() {
     <IonPage>
       <NavBar/>
         <IonContent fullscreen>
-            <p>{currentUser?.displayName} {currentUser?.email} Dashboard Page</p>
-            <p>Posiadane mapy</p>
+            <p>Mapy do weryfikacji</p>
+            <div style={{width:"100%"}}>
             {
                 unverifiedMaps.length>0 && unverifiedMaps.map((map:Map,index)=><MapListingForAdmin map={map} key={index}/>)
             }
+            </div>
         </IonContent>
     </IonPage>
   </>

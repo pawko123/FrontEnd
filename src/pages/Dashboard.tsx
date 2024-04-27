@@ -12,7 +12,7 @@ export default function Dashboard() {
     const [UserMapsData,setUserMapsData]=useState<Map[]>([])
     
     useEffect(()=>{
-        axios.get(`http://localhost:5000/maps/${currentUser?.email}`)
+        axios.get(`http://localhost:5000/maps/getusersmaps/${currentUser?.email}`)
         .then(res => {setUserMapsData(res.data)}).
         catch(err => console.log(err))
     },[])
@@ -32,7 +32,6 @@ export default function Dashboard() {
                 UserMapsData.length>0 && UserMapsData.map((map:Map,index)=><MapListing map={map} key={index}/>)
             }
             <a href="/NewMapForm"><IonButton>Stworz nowa mape</IonButton></a>
-            {/* <img src={UserMapsData && `http://localhost:5000/${UserMapsData[0]?.Pictures[0]}`}></img> */}
             {isadmin && <><a href="/MapsVerification"><IonButton>Sprawdz mapy oczekujace weryfikacji</IonButton></a></>}
         </IonContent>
     </IonPage>

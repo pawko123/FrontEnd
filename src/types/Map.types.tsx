@@ -1,7 +1,8 @@
 export type Map={
-    TrackName:String,
-    Creator:String,
-    Pictures:[File],
+    _id:string,
+    TrackName:string,
+    Creator:string,
+    Pictures:[string],
     RoutePoints:[number[]]
     Distance:number,
     negElevation:number,

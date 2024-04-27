@@ -28,6 +28,8 @@ import Services from './pages/Services';
 import Dashboard from './pages/Dashboard';
 import NewMapForm from './pages/NewMapForm';
 import MapsVerification from './pages/MapsVerification';
+import Intresting from './pages/Intresting';
+import MapPage from './pages/MapPage';
 
 setupIonicReact();
 
@@ -39,23 +41,29 @@ const App: React.FC = () => (
           <Route exact path="/home">
             <Home />
           </Route>
+          <Route exact path="/Intresting">
+            <Intresting />
+          </Route>
           <Route exact path="/Services">
             <Services />
           </Route>
-          <Route exact path="/Login">
-            <Login />
-          </Route>
-          <Route exact path="/Signup">
-            <Signup />
-          </Route>
           <Route exact path="/Dashboard">
             <Dashboard />
+          </Route>
+          <Route exact path="/MapPage">
+            <MapPage/>
           </Route>
           <Route exact path="/NewMapForm">
             <NewMapForm />
           </Route>
           <Route exact path="/MapsVerification">
             <MapsVerification />
+          </Route>
+          <Route exact path="/Login">
+            <Login />
+          </Route>
+          <Route exact path="/Signup">
+            <Signup />
           </Route>
           <Route exact path="/">
             <Redirect to="/home" />
