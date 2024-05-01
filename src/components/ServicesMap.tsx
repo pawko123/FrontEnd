@@ -7,6 +7,7 @@ import ShopMarker from "./ShopMarker";
 import {Service} from "../types/Service.types"
 import { AutoRepair } from "../types/AutoRepair.types";
 import AutoRepairMarker from "./AutoRepairMarker";
+import { useIonViewDidEnter } from "@ionic/react";
 
 export default function ServicesMap() {
 
@@ -23,6 +24,10 @@ export default function ServicesMap() {
         .then(res => setAutoRepairData(res.data)).
         catch(err => console.log(err))
     },[])
+
+    useIonViewDidEnter(() => {
+        window.dispatchEvent(new Event("resize"));
+      });
 
     const center:LatLng = latLng(51.935442596086354, 15.505764603525249)
 

@@ -5,7 +5,6 @@ import axios from 'axios';
 
 // @ts-ignore
 const AuthContext=React.createContext({currentUser: {} as User | null
-                                      ,isadmin: {} as boolean
                                       ,signup:(_e:string,_p:string)=>{}
                                       ,signupWithGoogle:()=>{}
                                       ,logout:()=>{}
@@ -22,9 +21,7 @@ export function useAuth(){
 export function AuthProvider({children}:Props) {
     const [currentUser, setCurrentUser] = useState<User | null>(null)
     const [loading,setLoading]=useState(true)
-    const [isadmin,setisadmin]=useState<boolean>(false)
-
-
+    
   
     function signupWithGoogle(){
       return signInWithPopup(auth,googleProvider)
@@ -45,9 +42,6 @@ export function AuthProvider({children}:Props) {
 
     useEffect(()=>{
       const unsubscribe= auth.onAuthStateChanged(user=>{
-        axios.get(`http://localhost:5000/admins/${user?.email}`)
-        .then(res => {setisadmin(res.data.isAdmin)}).
-        catch(err => console.log(err))
         setCurrentUser(user)
         setLoading(false)
       })
@@ -56,7 +50,6 @@ export function AuthProvider({children}:Props) {
 
     const value={
       currentUser,
-      isadmin,
       signup,
       signupWithGoogle,
       logout,

@@ -1,13 +1,14 @@
 import { LatLng, LatLngTuple, latLng } from 'leaflet';
 import { Map } from '../types/Map.types';
-import { MapContainer, Polyline, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, Polyline, TileLayer } from 'react-leaflet';
 import { useLocation } from 'react-router';
-import { IonButton, IonContent, IonPage } from '@ionic/react';
+import { IonButton, IonContent, IonPage, useIonViewDidEnter } from '@ionic/react';
 import NavBar from '../components/NavBar';
 import { useRef, useState } from 'react';
 import leftarrow from '../images/left-arrow.png';
 import rightarrow from '../images/right-arrow.png';
 import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext';
 
 interface stateType {
     map:Map
@@ -15,6 +16,7 @@ interface stateType {
 
 
 export default function MapPage() {
+    const {currentUser} = useAuth()
     const location = useLocation<stateType>();
     const [map,setmap] = useState(location.state ? location.state.map : null)
     const distanceInKm = map ? (map.Distance.valueOf() / 1000).toFixed(2) : '';
@@ -32,6 +34,10 @@ export default function MapPage() {
     const handlePrev = () => {
         setCurrentStartIndex(prevIndex => Math.max(prevIndex - 1, 0));
     };
+
+    useIonViewDidEnter(() => {
+        window.dispatchEvent(new Event("resize"));
+      });
 
     async function handleSend(e:any) {
         e.preventDefault();
@@ -118,15 +124,23 @@ export default function MapPage() {
                     <button style={{width:"5%"}} onClick={handlePrev} disabled={currentStartIndex === 0}><img src={leftarrow} alt='leftarrow'></img></button>
                     <div style={{display: 'flex', overflow: 'hidden',width:"90%"}}>
                         {map.Pictures.slice(currentStartIndex, currentStartIndex + 5).map((picture, index) => (
-                            <img src={`http://localhost:5000/${picture}`} alt={"zdjecie"+index} key={index} style={{width: '20%'}} />
+                            
+                            <img className='image' src={`http://localhost:5000/${picture}`} alt={"zdjecie"+index} key={index} style={{width: '20%'}} />
+                            
                         ))}
                     </div>
                     <button style={{width:"5%"}} onClick={handleNext} disabled={currentStartIndex + 5 >= map.Pictures.length}><img src={rightarrow} alt='rightarrow'></img></button>
                 </div>
             </div>
+            {currentUser ?
+            <>
             <p>Add more pictures: <input type="file" ref={zdjeciaref} multiple/> (tylko pliki png i jpg)</p>
             <IonButton disabled={loading} onClick={handleSend}>Dodaj nowe zdjecia</IonButton>
             {message && <p>{message}</p>}
+            </>
+            :
+            <p>Zaloguj się aby dodawać zdjęcia</p>
+            }
             </>}
         </IonContent>
     </IonPage>

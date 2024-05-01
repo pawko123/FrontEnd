@@ -71,7 +71,7 @@ export default function NewMapForm() {
         formData.append('plikGPX', plikGPX);
         //console.log(formData)
         try {
-              const response = await axios.post('http://localhost:5000/maps', formData, {
+              const response = await axios.post('http://localhost:5000/maps/uploadmap', formData, {
                  headers: {
                   'Content-Type': 'multipart/form-data',
                  },

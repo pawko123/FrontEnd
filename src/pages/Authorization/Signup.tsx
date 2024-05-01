@@ -3,7 +3,6 @@ import { IonButton, IonInput} from '@ionic/react'
 import { useEffect, useRef, useState} from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { useHistory } from 'react-router'
-import googleicon from '../../images/googleicon.svg' 
 
 export default function Signup() {
   const [error,setError]=useState("")

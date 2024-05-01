@@ -30,6 +30,8 @@ import NewMapForm from './pages/NewMapForm';
 import MapsVerification from './pages/MapsVerification';
 import Intresting from './pages/Intresting';
 import MapPage from './pages/MapPage';
+import Events from './pages/Events';
+import NewEventForm from './pages/NewEventForm';
 
 setupIonicReact();
 
@@ -43,6 +45,12 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/Intresting">
             <Intresting />
+          </Route>
+          <Route exact path="/Events">
+            <Events />
+          </Route>
+          <Route exact path="/NewEventForm">
+            <NewEventForm />
           </Route>
           <Route exact path="/Services">
             <Services />

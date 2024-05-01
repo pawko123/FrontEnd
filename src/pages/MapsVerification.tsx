@@ -8,23 +8,27 @@ import NavBar from '../components/NavBar';
 import { Redirect } from 'react-router';
 
 export default function MapsVerification() {
-    const {currentUser,isadmin}=useAuth()
+    const {currentUser}=useAuth()
     const [unverifiedMaps,setunverifiedMaps]=useState<Map[]>([])
+    const [isadmin,setisadmin]=useState<boolean>(false)
     
     useEffect(()=>{
+        axios.get(`http://localhost:5000/admins/${currentUser?.email}`)
+        .then(res => {setisadmin(res.data.isAdmin)
+          if (!currentUser) {
+            return <Redirect to="/Login" />;
+          }
+      
+          if(!isadmin){
+            return <Redirect to="/home" />
+          }
+        }).
+        catch(err => console.log(err))
         axios.get('http://localhost:5000/maps/unverifiedmaps')
-        .then(res => {setunverifiedMaps(res.data)
-        console.log(res.data)}).
+        .then(res => {setunverifiedMaps(res.data)}).
         catch(err => console.log(err))
     },[])
 
-    if (!currentUser) {
-      return <Redirect to="/Login" />;
-    }
-
-    if(!isadmin){
-        <Redirect to="/Home" />
-    }
 
     return (
     <>
