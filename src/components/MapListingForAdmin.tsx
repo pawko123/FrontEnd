@@ -12,7 +12,6 @@ interface Props{
 }
 //inny sposob const ShopMarker:React.FC<Props>=({service,key})=> a potem export default na koncu pliku
 export default function MapListingForAdmin(Props:Props) {
-    const {isadmin}=useAuth()
     const {map}=Props
     const [isInteresting, setIsInteresting] = useState(map.instresting);
     const [isVisible, setIsVisible] = useState(true);
@@ -79,7 +78,7 @@ export default function MapListingForAdmin(Props:Props) {
                 </MapContainer>
                 <p><span>{map.TrackName}  Length: {(distanceInKm)}km Elevation up: 
                 {map.posElevation.valueOf().toFixed(2)}m Elevation down: {map.negElevation.valueOf().toFixed(2)}m Verified: {map.verified ? <>prawda</> : <>falsz</>}</span></p>
-                {isadmin && !map.verified && <>
+                {!map.verified && <>
                 <IonButton onClick={handleverify}>Verify</IonButton>
                 <IonButton onClick={handledeny}>Deny</IonButton>
                 {isInteresting ? 
